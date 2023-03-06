@@ -50,7 +50,7 @@
 												</svg>
 											</span>
                             <!--end::Svg Icon-->
-                            <div class="text-gray-900 fw-bolder fs-2 mb-2 mt-5">{{\App\Models\user::count()}}</div>
+                            <div class="text-gray-900 fw-bolder fs-2 mb-2 mt-5">{{\App\Models\User::count()}}</div>
                             <div class="fw-bold text-gray-400">{{ __('lang.clients') }}</div>
                         </div>
                         <!--end::Body-->
