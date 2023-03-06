@@ -19,113 +19,70 @@
     </ul>
     <!--end::Breadcrumb-->
 @endsection
-
 @section('content')
-
     <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
         <!--begin::Post-->
-
         <div class="content flex-row-fluid" id="kt_content">
             <!--begin::Card-->
-
             <div class="card">
                 <!--begin::Card body-->
                 <div class="card-body pt-0">
-                    {{--                    <a href="{{route('orders.create')}}" class="btn btn-light-primary me-3">--}}
-                    {{--                        <i class="bi bi-plus-circle-fill fs-2x"></i>--}}
-                    {{--                    </a>--}}
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label><strong>type :</strong></label>
+                                        <label><strong>{{trans('lang.client')}}</strong></label>
+                                        <select id='client_id' name='client_id' class="form-control" style="width: 200px">
+                                            <option value="">{{trans('lang.choose_user')}}</option>
+                                            @foreach(\App\Models\User::get() as $row)
+                                                <option value="{{$row->id}}">{{$row->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label><strong>{{trans('lang.category')}}</strong></label>
+                                        <select id='user_id' name='category_id' class="form-control"
+                                                style="width: 200px">
+                                            <option value="">{{trans('lang.choose_category')}}</option>
+                                            @foreach(\App\Models\Category::where('parent_id',null)->get() as $row)
+                                                <option value="{{$row->id}}">
+                                                    @if(Session::get('lang')=='ar')
+                                                        {{ $row->name_ar }}
+                                                    @else
+                                                        {{ $row->name_en }}
+                                                    @endif
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label><strong>{{trans('lang.order_type')}}</strong></label>
                                         <select id='type' name='type' class="form-control" style="width: 200px">
-                                            <option value="">--Select type--</option>
-                                            <option value="import">import</option>
-                                            <option value="export">export</option>
+                                            <option value="">{{trans('lang.choose_order_type')}}</option>
+                                            <option value="import">{{trans('lang.import')}}</option>
+                                            <option value="export">{{trans('lang.export')}}</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label><strong>day :</strong></label>
-                                        <select id='day' name='day' class="form-control" style="width: 200px">
-                                            <option value="">--Select day--</option>
-                                            <option value="saturday">saturday</option>
-                                            <option value="sunday">sunday</option>
-                                            <option value="monday">monday</option>
-                                            <option value="tuesday">tuesday</option>
-                                            <option value="wednsday">wednsday</option>
-                                            <option value="thursday">thursday</option>
-                                            <option value="friday">friday</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label><strong>car :</strong></label>
-                                        <select id='car_id' name='car_id' class="form-control" style="width: 200px">
-                                            <option value="">--Select car--</option>
-                                            @foreach(\App\Models\Car::get() as $car)
-                                                <option value="{{$car->id}}">@if(Session::get('lang')=='en')
-                                                        {{$car->name_en}}
-                                                    @else
-                                                        {{$car->name_ar}}
-                                                    @endif</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label><strong>city :</strong></label>
-                                        <select id='city_id' name='city_id' class="form-control" style="width: 200px">
-                                            <option value="">--Select city--</option>
-                                            @foreach(\App\Models\City::get() as $city)
-                                                <option value="{{$city->id}}">@if(Session::get('lang')=='en')
-                                                        {{$city->name_en}}
-                                                    @else
-                                                        {{$city->name_ar}}
-                                                    @endif</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label><strong>admin :</strong></label>
-                                        <select id='admin_id' name='admin_id' class="form-control" style="width: 200px">
-                                            <option value="">--Select admin--</option>
-                                            @foreach(\App\Models\Admin::get() as $admin)
-                                                <option value="{{$admin->id}}">{{$admin->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="card" style="margin-top: 45px;">
                                 <button type="button" id="filter"
-                                        class="btn btn-light btn-active-light-primary me-2">{{trans('lang.search')}}</button>
+                                        class="btn btn-light btn-active-light-success me-2">{{trans('lang.search')}}</button>
                             </div>
                         </div>
                     </div>
@@ -134,7 +91,6 @@
                         <!--begin::Table head-->
                         <thead>
                         <!--begin::Table row-->
-
                         <tr class="text-start text-muted fw-bolder fs-5 text-uppercase gs-0">
                             <th class="w-10px pe-2">
                                 <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
@@ -150,10 +106,6 @@
                         <!--end::Table row-->
                         </thead>
                         <!--end::Table head-->
-                        <!--begin::Table body-->
-
-
-                        <!--end::Table body-->
                     </table>
                     <!--end::Table-->
                 </div>
@@ -164,14 +116,11 @@
         <!--end::Post-->
     </div>
 @endsection
-
 @section('script')
     <script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
-
     <script type="text/javascript">
         load_data();
-
-        function load_data(type = '', day = '') {
+        function load_data(type = '', client_id = '') {
             const table = $('#users_table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -201,7 +150,7 @@
                 ],
                 ajax: {
                     url: '{{ route($route.'.datatable') }}',
-                    data: {type: type, day: day}
+                    data: {type: type, client_id: client_id}
                 },
                 columns: [
                     {data: 'checkbox', name: 'checkbox', "searchable": false, "orderable": false},
@@ -211,7 +160,6 @@
                     {data: 'actions', name: 'actions', "searchable": false, "orderable": false},
                 ]
             });
-
             $.ajax({
                 url: "{{ URL::to($route.'/add-button')}}",
                 success: function (data) {
@@ -220,18 +168,17 @@
                 dataType: 'html'
             });
         }
-
         $('#filter').click(function () {
             var type = $('#type').val();
-            var day = $('#day').val();
-            if (type !== '' || day !== '') {
+            var client_id = $('#client_id').val();
+            console.log(type,client_id);
+            if (type !== '' || client_id !== '') {
                 $('#users_table').DataTable().destroy();
-                load_data(type, day);
+                load_data(type, client_id);
             } else {
                 alert('من فضلك حدد البحث');
             }
         });
-
     </script>
     <?php
     $message = session()->get("message");
@@ -256,8 +203,5 @@
             };
             toastr.success("{{$message}}", "نجاح");
         </script>
-
     @endif
-
 @endsection
-
