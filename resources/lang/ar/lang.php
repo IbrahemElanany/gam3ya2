@@ -2,6 +2,9 @@
 
 return [
 
+    'products' => 'المنتجات',
+    'clients' => 'العملاء',
+    'created_at' => 'تاريخ الانشاء',
     'details' => 'منتجات الطلب',
     'Orders_Edit' => 'تعديل بيانات الطلب',
     'delete' => 'حذف',
