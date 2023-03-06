@@ -124,6 +124,7 @@ class OrdersController extends Controller
                 OrderDetail::create(
                     array(
                         'order_id' => $order->id,
+                        'category_id' => $data['category_id'],
                         'subcategory_id' => $row['subcategory_id'],
                         'number' => $row['number'],
                     )
