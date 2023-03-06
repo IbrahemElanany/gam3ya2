@@ -2,6 +2,7 @@
 
 return [
 
+    'details' => 'منتجات الطلب',
     'Orders_Edit' => 'تعديل بيانات الطلب',
     'delete' => 'حذف',
     'product' => 'المنتج',

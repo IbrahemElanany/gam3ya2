@@ -691,19 +691,10 @@ License: For each use you must have a valid license purchased only from above li
 
 <script type="text/javascript">
     // add row
-    // $('#cmb_levels').change(function(){
-    //     var level = $(this).val();
-    //     $.ajax({
-    //         url: "/get_subjects/" + level ,
-    //         dataType: 'html',
-    //         type: 'get',
-    //         success: function (data) {
-    //             $('#subject_cont').show();
-    //             $('#lbl_subject_cont').show();
-    //             $('#cmb_subjects').html(data);
-    //         }
-    //     });
-    // });
+    $('#category_id').change(function () {
+        $('#newRow').empty();
+
+    });
     $("#addRow").click(function () {
 
             {{--  var countValue = document.getElementById('countValue').value;  --}}

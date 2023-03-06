@@ -87,7 +87,10 @@
                         onclick="myFunction3(this)" required>
                     @foreach ($categories as $category)
                         <option
-                            value="{{$category->id}}">@if(Session::get('lang')=='ar'){{ $category->name_ar }}@else{{ $category->name_en }}@endif</option>
+                            value="{{$category->id}}"
+                            @if(request()->segment(2) == 'edit')
+                            @if($data->category_id == $category->id) selected @endif
+                            @endif >@if(Session::get('lang')=='ar'){{ $category->name_ar }}@else{{ $category->name_en }}@endif</option>
                     @endforeach
                 </select>
             </div>
@@ -99,12 +102,14 @@
         <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
     </div>
     <br> --}}
-
+    <h3>
+        {{trans('lang.details')}}
+    </h3>
     <button id="addRow" type="button" class="btn btn-info"><i class="fa fa-plus"></i> {{__('lang.add_new')}}
     </button>
     <br> <br>
+    <input type="hidden" id="countValue" value="{{$data->details->count() -1 ?? 0 }}"/>
     <div id="newRow">
-        <input type="hidden" id="countValue" value="{{$data->details->count() ?? 0 }}"/>
 
         @if(request()->segment(2) == 'edit')
             @foreach($data->details as $count_value => $row)
