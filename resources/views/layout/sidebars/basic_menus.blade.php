@@ -62,6 +62,7 @@
                     <span class="menu-title">{{__('lang.Admins')}}</span>
                 </a>
             </div>
+
             <div class="menu-item">
                 <a class="menu-link @if(request()->routeIs('users.*')) active @endif "
                     href="{{url('/users')}}">
@@ -88,46 +89,45 @@
                     <span class="menu-title">{{__('lang.Users')}}</span>
                 </a>
             </div>
-            <div class="menu-item">
-                <a class="menu-link @if(request()->routeIs('cities.*')) active @endif "
-                    href="{{route('cities.index')}}">
-                    <span class="menu-icon">
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
-                        <span class="svg-icon svg-icon-primary svg-icon-2x">
-                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Map\Marker1.svg--><svg
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <rect x="0" y="0" width="24" height="24" />
-                                    <path
-                                        d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z"
-                                        fill="#000000" fill-rule="nonzero" />
-                                </g>
-                            </svg>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <span class="menu-title">{{__('lang.cities')}}</span>
-                </a>
-            </div>
-
-            <div class="menu-item">
-                <a class="menu-link @if(request()->routeIs('cars.*')) active @endif "
-                    href="{{route('cars.index')}}">
-                    <span class="menu-icon">
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
-                        <span class="svg-icon svg-icon-primary svg-icon-2x">
-                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Map\Marker1.svg-->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2 14v-3H1a1 1 0 0 1-1-1 1 1 0 0 1 1-1h1l4-7h8l4 7h1a1 1 0 0 1 1 1 1 1 0 0 1-1 1h-1v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H5v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3zm13.86-5L13 4H7L4.14 9h11.72zM5.5 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-                            </svg>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <span class="menu-title">{{__('lang.cars')}}</span>
-                </a>
-            </div>
+{{--            <div class="menu-item">--}}
+{{--                <a class="menu-link @if(request()->routeIs('cities.*')) active @endif "--}}
+{{--                    href="{{route('cities.index')}}">--}}
+{{--                    <span class="menu-icon">--}}
+{{--                        <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->--}}
+{{--                        <span class="svg-icon svg-icon-primary svg-icon-2x">--}}
+{{--                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Map\Marker1.svg--><svg--}}
+{{--                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"--}}
+{{--                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">--}}
+{{--                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">--}}
+{{--                                    <rect x="0" y="0" width="24" height="24" />--}}
+{{--                                    <path--}}
+{{--                                        d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z"--}}
+{{--                                        fill="#000000" fill-rule="nonzero" />--}}
+{{--                                </g>--}}
+{{--                            </svg>--}}
+{{--                            <!--end::Svg Icon-->--}}
+{{--                        </span>--}}
+{{--                        <!--end::Svg Icon-->--}}
+{{--                    </span>--}}
+{{--                    <span class="menu-title">{{__('lang.cities')}}</span>--}}
+{{--                </a>--}}
+{{--            </div>--}}
+{{--            <div class="menu-item">--}}
+{{--                <a class="menu-link @if(request()->routeIs('cars.*')) active @endif "--}}
+{{--                    href="{{route('cars.index')}}">--}}
+{{--                    <span class="menu-icon">--}}
+{{--                        <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->--}}
+{{--                        <span class="svg-icon svg-icon-primary svg-icon-2x">--}}
+{{--                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Map\Marker1.svg-->--}}
+{{--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2 14v-3H1a1 1 0 0 1-1-1 1 1 0 0 1 1-1h1l4-7h8l4 7h1a1 1 0 0 1 1 1 1 1 0 0 1-1 1h-1v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H5v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3zm13.86-5L13 4H7L4.14 9h11.72zM5.5 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>--}}
+{{--                            </svg>--}}
+{{--                            <!--end::Svg Icon-->--}}
+{{--                        </span>--}}
+{{--                        <!--end::Svg Icon-->--}}
+{{--                    </span>--}}
+{{--                    <span class="menu-title">{{__('lang.cars')}}</span>--}}
+{{--                </a>--}}
+{{--            </div>--}}
 
             <div class="menu-item">
                 <a class="menu-link @if(request()->routeIs('categories.*')) active @endif "
@@ -145,7 +145,7 @@
                 </a>
             </div>
 
-            
+
             <div class="menu-item">
                 <a class="menu-link @if(request()->routeIs('subs.*')) active @endif "
                     href="{{route('subs.index')}}">

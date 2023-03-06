@@ -2,20 +2,12 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ServicesController;
-use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\StoresController;
-use App\Http\Controllers\Admin\ImportantNumbersController;
-use App\Http\Controllers\Admin\ProvidersController;
-use App\Http\Controllers\Admin\SlidersController;
 use App\Http\Controllers\Admin\CitiesController;
 use App\Http\Controllers\Admin\CarsController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\SubcategoriesController;
-use App\Http\Controllers\Admin\ScreensController;
-use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\Admin\Ready\ReadyServicesController;
 use App\Http\Controllers\Admin\Ready\ReadyOrdersController;
 use App\Http\Controllers\Admin\OrdersController;
@@ -31,6 +23,7 @@ use App\Http\Controllers\Admin\OrdersController;
 |
 */
 
+Route::get('/add-new-row/{count_value}/{category_id}', [OrdersController::class, 'addNewRow']);
 Route::get('/subcategories/{category_id}', [OrdersController::class, 'getSubcategories']);
 
 Route::get('/login', function () {
@@ -66,29 +59,6 @@ Route::group(['middleware' => ['admin']], function () {
     });
 
 
-    //users
-    // Route::get('User_setting', [UserController::class, 'index'])->name('users.index');
-    // Route::get('User_datatable', [UserController::class, 'datatable'])->name('User.datatable.data');
-    // Route::get('delete-User', [UserController::class, 'destroy']);
-    // Route::post('store-User', [UserController::class, 'store']);
-    // Route::get('User-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    // Route::get('User-edit/show/{id}', [UserController::class, 'show'])->name('users.show2');
-    // Route::post('update-User', [UserController::class, 'update']);
-    // Route::get('/add-button-User', function () {
-    //     return view('Admin/User/button');
-    // });
-
-    // Route::group(['prefix' => 'users', 'as' => 'users'], function () {
-    //     Route::post('/change_active', [UserController::class, 'changeActive'])->name('.change_active');
-
-    //     Route::get('/show/{id}', [UserController::class, 'show'])->name('.show');
-    //     Route::get('/show/{id}/orders', [UserController::class, 'orders'])->name('.show.orders');
-    //     Route::get('/show/orders/datatable/{id}', [UserController::class, 'ordersDatatable'])->name('.orders.datatable');
-    //     Route::get('/show/rates/datatable/{id}', [UserController::class, 'ratesDatatable'])->name('.rates.datatable');
-
-    //     Route::get('/show/{id}/rates', [UserController::class, 'rates'])->name('.show.rates');
-    //     Route::get('/show/{id}/offers', [UserController::class, 'offers'])->name('.show.offers');
-    // });
 
      Route::group(['prefix' => 'users', 'as' => 'users'], function () {
         Route::get('/', [UserController::class, 'index'])->name('.index');
@@ -102,104 +72,7 @@ Route::group(['middleware' => ['admin']], function () {
         Route::get('/add-button', [UserController::class, 'table_buttons'])->name('.table_buttons');
     });
 
-    Route::group(['prefix' => 'services', 'as' => 'services'], function () {
-        Route::get('/', [ServicesController::class, 'index'])->name('.index');
-        Route::get('/datatable', [ServicesController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [ServicesController::class, 'create'])->name('.create');
-        Route::post('/store', [ServicesController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [ServicesController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [ServicesController::class, 'update'])->name('.update');
-        Route::post('/change_active', [ServicesController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', function () {
-            return view('Admin/Services/button');
-        });
-    });
 
-    Route::group(['prefix' => 'providers', 'as' => 'providers'], function () {
-        Route::get('/', [ProvidersController::class, 'index'])->name('.index');
-        Route::get('/datatable', [ProvidersController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [ProvidersController::class, 'create'])->name('.create');
-        Route::post('/store', [ProvidersController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [ProvidersController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [ProvidersController::class, 'update'])->name('.update');
-        Route::get('delete', [ProvidersController::class, 'destroy'])->name('.delete');
-        Route::post('/change_active', [ProvidersController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', [ProvidersController::class, 'table_buttons'])->name('.table_buttons');
-
-        Route::get('/show/{id}', [ProvidersController::class, 'show'])->name('.show');
-        Route::get('/show/{id}/orders', [ProvidersController::class, 'orders'])->name('.show.orders');
-        Route::get('/show/orders/datatable/{id}', [ProvidersController::class, 'ordersDatatable'])->name('.orders.datatable');
-        Route::get('/show/rates/datatable/{id}', [ProvidersController::class, 'ratesDatatable'])->name('.rates.datatable');
-
-        Route::get('/show/{id}/rates', [ProvidersController::class, 'rates'])->name('.show.rates');
-        Route::get('/show/{id}/offers', [ProvidersController::class, 'offers'])->name('.show.offers');
-
-    });
-
-    Route::group(['prefix' => 'news', 'as' => 'news'], function () {
-        Route::get('/', [NewsController::class, 'index'])->name('.index');
-        Route::get('/datatable', [NewsController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [NewsController::class, 'create'])->name('.create');
-        Route::post('/store', [NewsController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [NewsController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [NewsController::class, 'update'])->name('.update');
-        Route::get('delete', [NewsController::class, 'destroy'])->name('.delete');
-        Route::post('/change_active', [NewsController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', [NewsController::class, 'table_buttons'])->name('.table_buttons');
-    });
-
-    Route::group(['prefix' => 'stores', 'as' => 'stores'], function () {
-        Route::get('/', [StoresController::class, 'index'])->name('.index');
-        Route::get('/datatable', [StoresController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [StoresController::class, 'create'])->name('.create');
-        Route::post('/store', [StoresController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [StoresController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [StoresController::class, 'update'])->name('.update');
-        Route::get('delete', [StoresController::class, 'destroy'])->name('.delete');
-        Route::post('/change_active', [StoresController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', [StoresController::class, 'table_buttons'])->name('.table_buttons');
-    });
-
-    Route::group(['prefix' => 'pages', 'as' => 'pages'], function () {
-        Route::get('/edit/{type}', [PagesController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [PagesController::class, 'update'])->name('.update');
-    });
-
-    Route::group(['prefix' => 'important_numbers', 'as' => 'important_numbers'], function () {
-        Route::get('/', [ImportantNumbersController::class, 'index'])->name('.index');
-        Route::get('/datatable', [ImportantNumbersController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [ImportantNumbersController::class, 'create'])->name('.create');
-        Route::post('/store', [ImportantNumbersController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [ImportantNumbersController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [ImportantNumbersController::class, 'update'])->name('.update');
-        Route::get('delete', [ImportantNumbersController::class, 'destroy'])->name('.delete');
-        Route::post('/change_active', [ImportantNumbersController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', [ImportantNumbersController::class, 'table_buttons'])->name('.table_buttons');
-    });
-
-    Route::group(['prefix' => 'sliders', 'as' => 'sliders'], function () {
-        Route::get('/', [SlidersController::class, 'index'])->name('.index');
-        Route::get('/datatable', [SlidersController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [SlidersController::class, 'create'])->name('.create');
-        Route::post('/store', [SlidersController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [SlidersController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [SlidersController::class, 'update'])->name('.update');
-        Route::get('delete', [SlidersController::class, 'destroy'])->name('.delete');
-        Route::post('/change_active', [SlidersController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', [SlidersController::class, 'table_buttons'])->name('.table_buttons');
-    });
-
-    Route::group(['prefix' => 'screens', 'as' => 'screens'], function () {
-        Route::get('/', [ScreensController::class, 'index'])->name('.index');
-        Route::get('/datatable', [ScreensController::class, 'datatable'])->name('.datatable');
-        Route::get('/create', [ScreensController::class, 'create'])->name('.create');
-        Route::post('/store', [ScreensController::class, 'store'])->name('.store');
-        Route::get('/edit/{id}', [ScreensController::class, 'edit'])->name('.edit');
-        Route::post('/update/{id}', [ScreensController::class, 'update'])->name('.update');
-        Route::get('delete', [ScreensController::class, 'destroy'])->name('.delete');
-        Route::post('/change_active', [ScreensController::class, 'changeActive'])->name('.change_active');
-        Route::get('/add-button', [ScreensController::class, 'table_buttons'])->name('.table_buttons');
-    });
     Route::group(['prefix' => 'cities', 'as' => 'cities'], function () {
         Route::get('/', [CitiesController::class, 'index'])->name('.index');
         Route::get('/datatable', [CitiesController::class, 'datatable'])->name('.datatable');

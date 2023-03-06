@@ -24,83 +24,66 @@ class OrdersController extends Controller
     //     $this->objectName = $model;
     // }
 
-    // public function table_buttons()
-    // {
-    //     return view($this->viewPath . '.button');
-    // }
+    public function table_buttons()
+    {
+        return view('Admin.orders.button');
+    }
+
     public function index()
     {
         return view('Admin.orders.index');
     }
+
     public function datatable(Request $request)
     {
 
-        $data = Order::when($request->has('type') && !empty($request->type),function ($query) use ($request){
-            $query->where('type',$request->type);
+        $data = Order::when($request->has('type') && !empty($request->type), function ($query) use ($request) {
+            $query->where('type', $request->type);
         })
-            ->when($request->has('day') && !empty($request->day),function ($query) use ($request){
-                $query->where('day',$request->day);
+            ->when($request->has('day') && !empty($request->day), function ($query) use ($request) {
+                $query->where('day', $request->day);
             })
             ->orderBy('id', 'desc');
 
         return DataTables::of($data)
-        ->addColumn('checkbox', function ($row) {
+            ->addColumn('checkbox', function ($row) {
                 $checkbox = '';
                 $checkbox .= '<div class="form-check form-check-sm form-check-custom form-check-solid">
                                     <input class="form-check-input selector" type="checkbox" value="' . $row->id . '" />
                                 </div>';
                 return $checkbox;
             })
-            ->editColumn('car_id', function ($row) {
+            ->editColumn('category_id', function ($row) {
                 $car = '';
-                if(Session::get('lang')=='en'){
-                $car .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->car->getNameEnAttribute() . '</span>';
-                return $car;
-            }else{
-                $car .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->car->getNameArAttribute() . '</span>';
-                return $car;
-            }
+                if (Session::get('lang') == 'en') {
+                    $car .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->category->name_en . '</span>';
+                    return $car;
+                } else {
+                    $car .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->category->name_ar . '</span>';
+                    return $car;
+                }
             })
+            ->editColumn('client_id', function ($row) {
+                $car = '';
+                $car .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->client->name . '</span>';
+                return $car;
 
+            })
             ->editColumn('admin_id', function ($row) {
                 $user = '';
                 $user .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->admin->name . '</span>';
                 return $user;
             })
-
-            ->editColumn('city_id', function ($row) {
-                $city = '';
-                if(Session::get('lang')=='en'){
-                $city .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->city->getNameEnAttribute() . '</span>';
-                return $city;
-            }else{
-                $city .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->city->getNameArAttribute() . '</span>';
-                return $city;
-            }
-            })
-
-            ->editColumn('day', function ($row) {
-                $day = '';
-                $day .= ' <span class="text-gray-800 text-hover-primary mb-1">' . $row->day . '</span>';
-                return $day;
-            })
-
             ->editColumn('type', function ($row) {
                 $type = '';
-                if($row->type=='export'){
-                    $type .= ' <span class="text-gray-800 text-hover-primary mb-1">' . "export" . '</span>';
-                    return $type;
-                }else{
-                    $type .= ' <span class="text-gray-800 text-hover-primary mb-1">' . "import" . '</span>';
-                    return $type;
-                }
+                $type .= ' <span class="text-gray-800 text-hover-primary mb-1">' . trans('lang.' . $row->type) . '</span>';
+                return $type;
             })
-
             ->addColumn('actions', function ($row) {
                 $actions = ' <a href="' . url("/orders/edit/" . $row->id) . '" class="btn btn-active-light-info">' . trans('lang.edit') . ' <i class="bi bi-pencil-fill"></i>  </a>';
                 return $actions;
             })
-            ->rawColumns(['actions', 'checkbox', 'car_id', 'admin_id', 'city_id', 'day','type'])
+            ->rawColumns(['actions', 'checkbox', 'admin_id', 'category_id', 'type', 'client_id'])
             ->make();
 
     }
@@ -112,12 +95,11 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        $cars=Car::get();
-        $cities=City::get();
-        $categories=Category::whereNull('parent_id')->get();
+        $categories = Category::whereNull('parent_id')->get();
         $subcategories = Category::whereNotNull('parent_id')->get();
-        $clients=User::all();
-        return view('Admin.orders.form',compact('cars','cities','categories','subcategories','clients'));
+        $clients = User::all();
+
+        return view('Admin.orders.create', compact('categories', 'subcategories', 'clients'));
     }
 
     /**
@@ -129,53 +111,26 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate(request(), [
-            'car_id' => 'required|exists:cars,id',
-            'city_id' => 'required|exists:cities,id',
-            'first_amenities' => 'nullable|string',
-            'second_amenities' => 'nullable|string',
-            'third_amenities' => 'nullable|string',
-            'day' => 'required|string',
             'type' => 'required|string',
-            'period' => 'required|string',
-            // 'address' => 'required|string',
-            // 'phone' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'client_id' => 'required|exists:users,id',
-            'category_id' => 'required|array',
-            'category_id.*' => 'required|numeric',
-            'subcategory_id' => 'required|array',
-            'subcategory_id.*' => 'required|numeric',
-            'number' => 'required|array',
-            'number.*' => 'required|numeric',
-        ]);
-        $order = new Order();
-        $order->car_id = $request->car_id ;
-        $order->city_id = $request->city_id ;
-        $order->first_amenities = $request->first_amenities ;
-        $order->second_amenities = $request->second_amenities ;
-        $order->third_amenities = $request->third_amenities ;
-        $order->day = $request->day ;
-        $order->type = $request->type ;
-        $order->period = $request->period ;
-        $order->client_id = $request->client_id ;
+            'details' => 'required|array|min:1',
 
-        // $order->address = $request->address ;
-        // $order->phone = $request->phone ;
-        $order->admin_id=Auth::guard('admin')->user()->id;
-        $order->save();
-        $categories=$request->category_id;
-        $subcategories=$request->subcategory_id;
-        $numbers=$request->number;
-        for($i=0; $i<count($categories);$i++){
-            OrderDetail::create(
-                array(
-                    'order_id'=>$order->id,
-                    'category_id'=>$categories[$i],
-                    'subcategory_id'=>$subcategories[$i],
-                    'number'=>$numbers[$i],
-                )
-            );
+        ]);
+        $data['admin_id'] = Auth::guard('admin')->user()->id;
+        $order = Order::create($data);
+        if (count($request->details) > 0) {
+            foreach ($request->details as $row) {
+                OrderDetail::create(
+                    array(
+                        'order_id' => $order->id,
+                        'subcategory_id' => $row['subcategory_id'],
+                        'number' => $row['number'],
+                    )
+                );
+            }
         }
-       return redirect(url('orders'))->with('message', 'تم الاضافة بنجاح ');
+        return redirect(url('orders'))->with('message', 'تم الاضافة بنجاح ');
 
     }
 
@@ -199,13 +154,10 @@ class OrdersController extends Controller
     public function edit($id)
     {
         $data = Order::findOrFail($id);
-        $cars=Car::get();
-        $cities=City::get();
-        $categories=Category::whereNull('parent_id')->get();
-        $subcategories = Category::whereNotNull('parent_id')->get();
-        $clients=User::get();
-        return view('admin.orders.edit', compact('data','cars',
-        'cities','categories','subcategories','clients'));
+        $categories = Category::whereNull('parent_id')->get();
+        $subcategories = Category::where('parent_id', $data->category_id)->get();
+        $clients = User::get();
+        return view('admin.orders.edit', compact('data', 'categories', 'clients', 'subcategories'));
     }
 
     /**
@@ -215,64 +167,29 @@ class OrdersController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $data = $this->validate(request(), [
-            'car_id' => 'required|exists:cars,id',
-            'city_id' => 'required|exists:cities,id',
-            'client_id' => 'required|exists:users,id',
-            'first_amenities' => 'nullable|string',
-            'second_amenities' => 'nullable|string',
-            'third_amenities' => 'nullable|string',
-            'day' => 'required|string',
             'type' => 'required|string',
-            'period' => 'required|string',
-            // 'address' => 'required|string',
-            // 'phone' => 'required|string',
-            'category_id' => 'required|array',
-            'category_id.*' => 'required|numeric',
-            'subcategory_id' => 'required|array',
-            'subcategory_id.*' => 'required|numeric',
-            'number' => 'required|array',
-            'number.*' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'client_id' => 'required|exists:users,id',
+            'details' => 'required|array|min:1',
+
         ]);
-
-
-
-        $order = Order::whereId($request->id)->first();
-        $order->car_id = $request->car_id ;
-        $order->city_id = $request->city_id ;
-        $order->client_id = $request->client_id ;
-        $order->first_amenities = $request->first_amenities ;
-        $order->second_amenities = $request->second_amenities ;
-        $order->third_amenities = $request->third_amenities ;
-        $order->day = $request->day ;
-        $order->period = $request->period ;
-        // $order->address = $request->address ;
-        // $order->phone = $request->phone ;
-        $order->type = $request->type ;
-        $order->admin_id=Auth::guard('admin')->user()->id;
-        $order->save();
-        $categories=$request->category_id;
-        $subcategories=$request->subcategory_id;
-        $numbers=$request->number;
-        if(isset($categories)){
-        OrderDetail::where('order_id',$order->id)->delete();
-        for($i=0; $i<count($categories);$i++){
-            OrderDetail::create(
-                array(
-                    'order_id'=>$order->id,
-                    'category_id'=>$categories[$i],
-                    'subcategory_id'=>$subcategories[$i],
-                    'number'=>$numbers[$i],
-                )
-            );
+        unset($data['details']);
+        Order::whereId($id)->update($data);
+        if (count($request->details) > 0) {
+            OrderDetail::where('order_id', $id)->delete();
+            foreach ($request->details as $row) {
+                OrderDetail::create(
+                    array(
+                        'order_id' => $id,
+                        'subcategory_id' => $row['subcategory_id'],
+                        'number' => $row['number'],
+                    )
+                );
+            }
         }
-    }
-
-
-
-
         return redirect(url('orders'))->with('message', 'تم التعديل بنجاح ');
     }
 
@@ -294,7 +211,7 @@ class OrdersController extends Controller
 
     public function getSubcategories($category_id)
     {
-        $allsubcategories = Category::where('parent_id',$category_id)->get();
+        $allsubcategories = Category::where('parent_id', $category_id)->get();
         $subcategories = array();
         $i = 0;
         foreach ($allsubcategories as $subcategory) {
@@ -305,14 +222,20 @@ class OrdersController extends Controller
         return response()->json($subcategories);
     }
 
+    public function addNewRow($count_value, $category_id)
+    {
+        $data = Category::where('parent_id', $category_id)->get();
+        return view('Admin.orders.parts.new_row', compact('data', 'count_value'));
+    }
+
     public function filter(Request $request)
     {
-        $orders=Order::where('car_id',$request->car_id)
-        ->orWhere('admin_id', $request->admin_id)
-        ->orWhere('city_id', $request->city_id)
-        ->orWhere('type', $request->type)
-        ->orWhere('day', $request->day)->get();
-        return view('Admin.orders.filter',compact('orders'));
+        $orders = Order::where('car_id', $request->car_id)
+            ->orWhere('admin_id', $request->admin_id)
+            ->orWhere('city_id', $request->city_id)
+            ->orWhere('type', $request->type)
+            ->orWhere('day', $request->day)->get();
+        return view('Admin.orders.filter', compact('orders'));
 
     }
 }

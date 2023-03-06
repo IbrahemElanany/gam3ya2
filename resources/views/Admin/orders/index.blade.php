@@ -31,9 +31,9 @@
             <div class="card">
                 <!--begin::Card body-->
                 <div class="card-body pt-0">
-                    <a href="{{route('orders.create')}}" class="btn btn-light-primary me-3">
-                        <i class="bi bi-plus-circle-fill fs-2x"></i>
-                    </a>
+                    {{--                    <a href="{{route('orders.create')}}" class="btn btn-light-primary me-3">--}}
+                    {{--                        <i class="bi bi-plus-circle-fill fs-2x"></i>--}}
+                    {{--                    </a>--}}
 
                     <div class="row">
                         <div class="col-md-4">
@@ -142,12 +142,9 @@
                                            data-kt-check-target="#users_table .form-check-input" value="1"/>
                                 </div>
                             </th>
-
-                            <th class="min-w-125px">{{__('lang.car')}}</th>
-                            <th class="min-w-125px">{{__('lang.user')}}</th>
-                            <th class="min-w-125px">{{__('lang.city')}}</th>
-                            <th class="min-w-125px">{{__('lang.day')}}</th>
-                            <th class="min-w-125px">{{__('lang.type')}}</th>
+                            <th class="min-w-125px">{{__('lang.client')}}</th>
+                            <th class="min-w-125px">{{__('lang.category')}}</th>
+                            <th class="min-w-125px">{{__('lang.order_type')}}</th>
                             <th class="min-w-125px">{{__('lang.Actions')}}</th>
                         </tr>
                         <!--end::Table row-->
@@ -173,7 +170,8 @@
 
     <script type="text/javascript">
         load_data();
-        function load_data(type = '',day = '') {
+
+        function load_data(type = '', day = '') {
             const table = $('#users_table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -203,14 +201,12 @@
                 ],
                 ajax: {
                     url: '{{ route($route.'.datatable') }}',
-                    data:{type:type,day:day}
+                    data: {type: type, day: day}
                 },
                 columns: [
                     {data: 'checkbox', name: 'checkbox', "searchable": false, "orderable": false},
-                    {data: 'car_id', name: 'car_id', "searchable": true, "orderable": true},
                     {data: 'client_id', name: 'client_id', "searchable": true, "orderable": true},
-                    {data: 'city_id', name: 'city', "searchable": true, "orderable": true},
-                    {data: 'day', name: 'day', "searchable": true, "orderable": true},
+                    {data: 'category_id', name: 'category_id', "searchable": true, "orderable": true},
                     {data: 'type', name: 'type', "searchable": true, "orderable": true},
                     {data: 'actions', name: 'actions', "searchable": false, "orderable": false},
                 ]
@@ -225,13 +221,13 @@
             });
         }
 
-        $('#filter').click(function(){
+        $('#filter').click(function () {
             var type = $('#type').val();
             var day = $('#day').val();
-            if(type !== '' || day !== '') {
+            if (type !== '' || day !== '') {
                 $('#users_table').DataTable().destroy();
-                load_data(type,day);
-            }else{
+                load_data(type, day);
+            } else {
                 alert('من فضلك حدد البحث');
             }
         });
