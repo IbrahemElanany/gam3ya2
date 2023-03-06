@@ -108,7 +108,11 @@
     <button id="addRow" type="button" class="btn btn-info"><i class="fa fa-plus"></i> {{__('lang.add_new')}}
     </button>
     <br> <br>
-    <input type="hidden" id="countValue" value="{{$data->details->count() -1 ?? 0 }}"/>
+    @if(request()->segment(2) == 'edit')
+        <input type="hidden" id="countValue" value="{{$data->details->count() -1 ?? 0 }}"/>
+    @else
+        <input type="hidden" id="countValue" value="0"/>
+    @endif
     <div id="newRow">
 
         @if(request()->segment(2) == 'edit')
